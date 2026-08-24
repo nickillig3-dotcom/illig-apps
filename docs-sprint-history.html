@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Past Sprints, Sprint History &amp; Scope Change - Documentation</title>
+<style>
+:root{color-scheme:light dark}
+body{max-width:44rem;margin:0 auto;padding:3rem 1.25rem;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#172b4d;background:#fff}
+@media (prefers-color-scheme:dark){body{color:#c7d1db;background:#1d2125}}
+h1{font-size:1.6rem;margin:0 0 .3rem}
+h2{font-size:1.15rem;margin:2.2rem 0 .6rem}
+h3{font-size:1rem;margin:1.4rem 0 .3rem}
+p.sub{opacity:.7;margin:0 0 2rem}
+li{margin:.4rem 0}a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#669df1}}
+dt{font-weight:600;margin-top:.8rem}
+dd{margin:.15rem 0 0 1.2rem}
+code{background:rgba(9,30,66,.08);padding:.1rem .3rem;border-radius:3px;font-size:.9em}
+@media (prefers-color-scheme:dark){code{background:rgba(255,255,255,.1)}}
+.note{border-left:3px solid #0c66e4;padding:.1rem 0 .1rem .9rem;margin:1.2rem 0;opacity:.9}
+table{border-collapse:collapse;margin:.8rem 0;font-size:.95em}
+th,td{border-bottom:1px solid rgba(9,30,66,.15);text-align:left;padding:.35rem .8rem .35rem 0;vertical-align:top}
+</style></head><body>
+<h1>Past Sprints, Sprint History &amp; Scope Change</h1>
+<p class="sub">Documentation for the Jira Cloud dashboard gadgets by Illig Apps</p>
+
+<h2>Install</h2>
+<p>A Jira administrator installs the app from the Atlassian Marketplace. There is nothing to
+configure afterwards and no account to create: the app runs on Atlassian&rsquo;s own
+infrastructure and reads your issues through Jira&rsquo;s API as the person looking at the
+gadget.</p>
+
+<h2>Add a gadget to a dashboard</h2>
+<ol>
+<li>Open <b>Dashboards</b> and pick the dashboard you want, or create one.</li>
+<li>Choose <b>Add gadget</b>, search for <i>Sprint</i>, and add
+    <b>Sprint History</b> or <b>Sprint Scope Change</b>.</li>
+<li>The gadget opens its settings straight away. Fill them in and choose <b>Save</b>.</li>
+</ol>
+<p>To change the settings later, use the gadget&rsquo;s <b>&hellip;</b> menu and choose
+<b>Edit</b>, or switch the whole dashboard to edit mode.</p>
+
+<h2>Settings</h2>
+<dl>
+<dt>Project</dt>
+<dd>The project whose sprints you want to report on. Sprints are found through the issues in
+    your selection, so this decides both which sprints appear and which issues are counted.</dd>
+
+<dt>Saved filter</dt>
+<dd>One of your favourite filters, instead of a whole project. Overrides the project above.</dd>
+
+<dt>JQL</dt>
+<dd>Any JQL query, for example <code>project = ABC AND type != Sub-task</code>. Overrides both
+    of the settings above. Use this when a board&rsquo;s scope is narrower than its project.</dd>
+
+<dt>Sprint <span style="font-weight:400;opacity:.7">(Sprint Scope Change only)</span></dt>
+<dd>Which sprint to break down. The default, <i>Most recently completed sprint</i>, follows
+    your team automatically and needs no maintenance.</dd>
+
+<dt>How far back <span style="font-weight:400;opacity:.7">(Sprint History only)</span></dt>
+<dd>How many sprints to show, newest ones last. Between 3 and 30.</dd>
+
+<dt>What to measure</dt>
+<dd>Story point estimate, original estimate, remaining estimate, any other numeric field on
+    your site, or <i>Issue count</i>. The list is read from your own instance, so it contains
+    your custom fields under the names your site uses. Story points are offered first.</dd>
+
+<dt>Issues read at most</dt>
+<dd>An upper bound on how many issues the gadget reads, between 100 and 8000. If the bound is
+    reached the gadget says so instead of showing a smaller number as if it were complete.</dd>
+
+<dt>List the individual issues <span style="font-weight:400;opacity:.7">(Sprint Scope Change only)</span></dt>
+<dd>Show each issue with its bucket and the status it held when the sprint ended.</dd>
+</dl>
+
+<h2>What the numbers mean</h2>
+<table>
+<tr><th>Committed</th><td>In the sprint at the moment it was started.</td></tr>
+<tr><th>Added</th><td>Put into the sprint after it had started. This is the scope creep.</td></tr>
+<tr><th>Removed</th><td>Taken out of the sprint before it ended.</td></tr>
+<tr><th>Added and removed again</th><td>Put in and taken out again inside the same sprint.</td></tr>
+<tr><th>Delivered</th><td>In a status of the <i>Done</i> category <b>when the sprint ended</b> &mdash;
+    not the status the issue has today.</td></tr>
+<tr><th>Carried over</th><td>Still in the sprint when it ended, and not delivered.</td></tr>
+<tr><th>Scope change</th><td><code>(added &minus; removed) &divide; committed</code>, as a percentage.
+    A sprint with nothing committed shows no percentage rather than dividing by zero.</td></tr>
+</table>
+
+<p>An issue that was removed from the sprint and finished afterwards is deliberately
+<b>not</b> counted as that sprint&rsquo;s output. Counting it there is the easiest way to make a
+velocity figure flatter than the team actually was.</p>
+
+<h2>Where the numbers come from</h2>
+<p>Jira can say which issues are in a sprint <i>now</i>. It cannot say which were in it when
+the sprint started, and an issue that was pulled out leaves no trace on the sprint at all.
+So the app reconstructs it from the issue changelog:</p>
+<ol>
+<li>Every change to the <b>Sprint</b> field writes a changelog entry, and each entry carries
+    the complete new list of sprints. Sorted by time these form a series of steps, and the
+    membership at any instant is the last step at or before it.</li>
+<li>The membership is read at the sprint&rsquo;s start and at its completion. The two answers
+    give the four buckets above.</li>
+<li>The same replay is done on the <b>status</b> field to find the status each issue held when
+    the sprint ended.</li>
+</ol>
+
+<div class="note">This is the calculation behind
+<a href="https://jira.atlassian.com/browse/JRACLOUD-75868">JRACLOUD-75868</a>, open since 2016
+with over 1,400 votes, which asks Jira for exactly this and has not been scheduled.</div>
+
+<h2>The three cases where the gadget says it is not sure</h2>
+<dl>
+<dt>&ldquo;Only the first N issues were read&rdquo;</dt>
+<dd>The selection is larger than the issue limit, so sprints further back may be incomplete.
+    Narrow the filter, show fewer sprints, or raise the limit.</dd>
+
+<dt>&ldquo;The list of done statuses could not be read&rdquo;</dt>
+<dd>Jira did not return the status catalogue, so nothing can be counted as delivered. Every
+    other figure is still correct.</dd>
+
+<dt>&ldquo;N issues had no recorded status when the sprint ended&rdquo;</dt>
+<dd>Those issues are counted as not delivered. This happens when an issue&rsquo;s history was
+    trimmed or imported without one.</dd>
+</dl>
+
+<h2>Limits worth knowing before you buy</h2>
+<ul>
+<li>A sprint that no longer contains a single issue cannot be found and does not appear.</li>
+<li>Sprints are found through the issues in your selection, so an issue moved to another
+    project after a sprint is no longer counted in it.</li>
+<li>Future sprints are not shown: they have no start date and nothing to report.</li>
+<li>Statuses are compared by their id, so renaming a status does not break the history. A
+    status that is deleted outright cannot be classified afterwards.</li>
+</ul>
+
+<h2>Permissions and data</h2>
+<p>The app asks for a single scope, <code>read:jira-work</code>, and never writes to your
+issues. Every request runs as the person looking at the gadget, so a viewer sees only the
+issues their own Jira permissions allow. The app stores nothing, runs entirely on Atlassian
+infrastructure and makes no request to any server outside Atlassian.</p>
+
+<h2>Support</h2>
+<p><a href="mailto:nickillig3@gmail.com">nickillig3@gmail.com</a> &middot;
+   <a href="index.html">All apps</a> &middot;
+   <a href="privacy.html">Privacy</a> &middot;
+   <a href="terms.html">Terms</a></p>
+</body></html>

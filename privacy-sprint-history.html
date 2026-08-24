@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Past Sprints, Sprint History &amp; Scope Change</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    max-width: 46rem; margin: 0 auto; padding: 2.5rem 1.25rem 5rem;
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #172b4d; background: #fff;
+  }
+  @media (prefers-color-scheme: dark) { body { color: #c7d1db; background: #1d2125; } }
+  h1 { font-size: 1.7rem; line-height: 1.25; margin: 0 0 .35rem; }
+  h2 { font-size: 1.1rem; margin: 2.2rem 0 .5rem; }
+  .sub { opacity: .7; margin: 0 0 2rem; }
+  ul { padding-left: 1.2rem; }
+  li { margin: .3rem 0; }
+  code { font-size: .9em; }
+  .box { border-left: 3px solid #0052cc; padding: .1rem 0 .1rem 1rem; margin: 1.5rem 0; }
+  footer { margin-top: 3rem; font-size: .875rem; opacity: .7; }
+  a { color: #0052cc; }
+  @media (prefers-color-scheme: dark) { a { color: #669df1; } }
+</style>
+</head>
+<body>
+
+<h1>Privacy Policy</h1>
+<p class="sub">Past Sprints, Sprint History &amp; Scope Change Gadgets for Jira — last updated 24 August 2026</p>
+
+<div class="box">
+  <p><strong>The short version:</strong> this app stores nothing. It runs entirely on
+  Atlassian's own infrastructure, reads the Jira issues you already have access to in order
+  to draw a number on your dashboard, and forgets them as soon as the gadget has rendered.
+  No data is sent anywhere else, and there is no server of ours for it to be sent to.</p>
+</div>
+
+<h2>Who is responsible</h2>
+<p>Nick Illig, Germany. Contact: <a href="mailto:nickillig3@gmail.com">nickillig3@gmail.com</a>.
+For a postal address, please write to that email and it will be provided.</p>
+
+<h2>What the app does with your data</h2>
+<p>The app is an Atlassian Forge app. Forge apps run on infrastructure operated by Atlassian,
+inside Atlassian's own cloud — this app qualifies for Atlassian's <em>Runs on Atlassian</em>
+programme, which means it uses no external hosting of any kind.</p>
+<p>When a dashboard gadget is displayed, the app calls Jira's REST API on your behalf and reads:</p>
+<ul>
+  <li>issues matching the filter or project you configured in the gadget,</li>
+  <li>for each issue: its key, summary, current status, sprint field and the numeric field
+      you chose to measure — only the fields needed for the figures shown,</li>
+  <li><strong>the change history of those issues</strong>, restricted to entries for the
+      <em>Sprint</em> and <em>status</em> fields. This is unavoidable: which issues were in a
+      sprint when it started, and which were added afterwards, exists nowhere else in Jira,</li>
+  <li>the list of Jira field definitions and the list of statuses, in order to detect which
+      custom fields hold sprints and estimates on your site and which statuses count as done,</li>
+  <li>the names of your projects and of your favourite filters, so the gadget settings can
+      offer them.</li>
+</ul>
+<p>Those values are used to compute the totals and then discarded. They are held only in memory
+for the duration of the request that renders the gadget.</p>
+
+<h2>What the app does not do</h2>
+<ul>
+  <li><strong>No storage.</strong> The app writes nothing to Forge storage, no database, no cache,
+      no logs of your issue data.</li>
+  <li><strong>No transmission to third parties.</strong> There is no external endpoint, no
+      analytics, no telemetry, no advertising, no tracking pixels.</li>
+  <li><strong>No profiling and no automated decision-making.</strong></li>
+  <li><strong>No access beyond your own.</strong> The app calls Jira as the viewing user, so it can
+      only ever read issues that user is already permitted to see. It cannot widen anyone's access.</li>
+</ul>
+
+<h2>Permissions the app requests</h2>
+<p><code>read:jira-work</code> — read issues, fields and projects. This is the only scope requested,
+and it is read-only. The app never creates, edits or deletes anything in your Jira.</p>
+
+<h2>Personal data under the GDPR</h2>
+<p>Issue data may incidentally contain personal data — an assignee's display name, for example.
+The app processes such data only transiently to render a total, on the instruction of your
+organisation as the controller, and never retains it. Atlassian remains the processor for the
+underlying Jira data; the legal basis for that processing is your organisation's agreement with
+Atlassian. Because nothing is retained, there is no data of yours held by us to export, correct
+or erase.</p>
+
+<h2>Sub-processors</h2>
+<p>None. The app has no infrastructure outside Atlassian's.</p>
+
+<h2>Data location</h2>
+<p>Wherever your Atlassian site is hosted. The app introduces no additional location, and no data
+crosses a border that Atlassian's own hosting does not already cross.</p>
+
+<h2>Security incidents</h2>
+<p>Since no data is stored, a compromise of the app could not expose retained customer data. Should
+a security issue nonetheless arise, it will be reported to affected customers and to Atlassian
+without undue delay via the contact address above.</p>
+
+<h2>Changes to this policy</h2>
+<p>If the app ever begins to store data, this page will be updated before that version is released,
+and the change will be described in the app's release notes on the Atlassian Marketplace.</p>
+
+<footer>
+  <p>Past Sprints, Sprint History &amp; Scope Change Gadgets for Jira ·
+  <a href="terms-sprint-history.html">Terms of Service</a> ·
+  <a href="mailto:nickillig3@gmail.com">Support</a></p>
+</footer>
+
+</body>
+</html>
