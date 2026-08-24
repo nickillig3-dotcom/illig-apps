@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Story Points Sum &amp; Epic Progress - Documentation</title>
+<style>
+:root{color-scheme:light dark}
+body{max-width:44rem;margin:0 auto;padding:3rem 1.25rem;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#172b4d;background:#fff}
+@media (prefers-color-scheme:dark){body{color:#c7d1db;background:#1d2125}}
+h1{font-size:1.6rem;margin:0 0 .3rem}
+h2{font-size:1.15rem;margin:2.2rem 0 .6rem}
+h3{font-size:1rem;margin:1.4rem 0 .3rem}
+p.sub{opacity:.7;margin:0 0 2rem}
+li{margin:.4rem 0}a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#669df1}}
+dt{font-weight:600;margin-top:.8rem}
+dd{margin:.15rem 0 0 1.2rem}
+code{background:rgba(9,30,66,.08);padding:.1rem .3rem;border-radius:3px;font-size:.9em}
+@media (prefers-color-scheme:dark){code{background:rgba(255,255,255,.1)}}
+.note{border-left:3px solid #0c66e4;padding:.1rem 0 .1rem .9rem;margin:1.2rem 0;opacity:.9}
+</style></head><body>
+<h1>Story Points Sum &amp; Epic Progress</h1>
+<p class="sub">Documentation for the Jira Cloud dashboard gadgets by Illig Apps</p>
+
+<h2>Install</h2>
+<p>A Jira administrator installs the app from the Atlassian Marketplace. There is nothing to
+configure afterwards and no account to create: the app runs on Atlassian&rsquo;s own
+infrastructure and reads your issues through Jira&rsquo;s API as the person looking at the
+gadget.</p>
+
+<h2>Add a gadget to a dashboard</h2>
+<ol>
+<li>Open <b>Dashboards</b> and pick the dashboard you want, or create one.</li>
+<li>Choose <b>Add gadget</b>, search for <i>Story points</i>, and add
+    <b>Story Points Sum</b> or <b>Epic Progress</b>.</li>
+<li>The gadget opens its settings straight away. Fill them in and choose <b>Save</b>.</li>
+</ol>
+<p>To change the settings later, use the gadget&rsquo;s <b>&hellip;</b> menu and choose
+<b>Edit</b>, or switch the whole dashboard to edit mode.</p>
+
+<h2>Settings</h2>
+<dl>
+<dt>Saved filter</dt>
+<dd>Pick one of your favourite filters. Choosing a filter overrides the JQL box below it.</dd>
+
+<dt>JQL</dt>
+<dd>Any JQL query, for example <code>project = ABC AND sprint in openSprints()</code>.
+    Used when no saved filter is chosen.</dd>
+
+<dt>What to add up</dt>
+<dd>Story point estimate, original estimate, time spent, or any other numeric field on your
+    site. Choose <i>Number of issues</i> to count instead of adding up. The list is read from
+    your own instance, so it contains your custom fields under the names your site uses.</dd>
+
+<dt>Group by</dt>
+<dd>Status, status category, assignee, reporter, priority, issue type, project, resolution,
+    parent (epic), label, component, fix version or sprint. <b>Epic Progress</b> always groups
+    by parent and does not offer this setting.</dd>
+
+<dt>Order</dt>
+<dd><i>Largest total first</i>, <i>Most issues first</i>, <i>Furthest along first</i> or
+    <i>Alphabetical</i>.</dd>
+
+<dt>Rows shown</dt>
+<dd>How many rows to display, up to 100. Rows beyond the limit are counted in the total and
+    reported underneath the table.</dd>
+
+<dt>Issues read at most</dt>
+<dd>An upper bound on how many issues the gadget reads for one refresh, up to 10,000. Lower it
+    on very large queries if the gadget feels slow.</dd>
+
+<dt>Show rows whose total is zero</dt>
+<dd>Keeps groups that add up to nothing, so an empty status or an unstarted epic still appears.</dd>
+
+<dt>Refresh</dt>
+<dd>Never, or every 5, 15 or 60 minutes.</dd>
+</dl>
+
+<h2>Reading the numbers</h2>
+<p>The line at the top is the grand total: how much of the chosen field the query adds up to,
+and how many issues that came from. The lozenge beside it is the share of that total sitting in
+a status whose category is <i>Done</i>. Each row below is one group, with its own total and issue
+count. <b>Epic Progress</b> shows completed against total for each epic instead.</p>
+
+<h2>What the gadget tells you when it cannot be sure</h2>
+<ul>
+<li><b>More issues than were read.</b> If the query is larger than the <i>Issues read at most</i>
+    limit, the gadget says how many issues it counted and roughly how many exist, instead of
+    presenting an incomplete total as if it were final.</li>
+<li><b>Groupings that overlap.</b> Labels, components, sprints and fix versions can hold several
+    values on one issue, so an issue can appear in more than one row. The gadget says so, rather
+    than quietly showing rows that add up to more than the total.</li>
+<li><b>Rows not shown.</b> If the row limit hides groups, it says how many.</li>
+</ul>
+
+<h2>Permissions and data</h2>
+<p>Every read runs as the person viewing the gadget, so two people looking at the same gadget
+see only the issues each of them is allowed to see. The app never writes to your issues. It runs
+entirely inside Atlassian, sends nothing to any external server, and stores no issue data.</p>
+
+<h2>Licensing</h2>
+<p>The app is free for sites with up to 10 users. Larger sites can start a free trial from the
+Marketplace listing; when no licence is active, the gadgets say so instead of showing numbers.</p>
+
+<h2>Troubleshooting</h2>
+<h3>The field I want is not in the list</h3>
+<p>Only numeric fields are offered, because anything else cannot be added up. Team-managed and
+company-managed projects keep story points in different custom fields; both are listed when they
+exist on your site.</p>
+<h3>The gadget says Jira rejected the JQL</h3>
+<p>Open the query in the issue navigator to see Jira&rsquo;s own error message, then paste the
+corrected query back into the gadget settings.</p>
+<h3>The totals look too small</h3>
+<p>Check the note underneath the table. Either the row limit is hiding groups, or the query is
+larger than the read limit.</p>
+
+<h2>Support</h2>
+<p>Write to <a href="mailto:nickillig3@gmail.com">nickillig3@gmail.com</a>. Please include your
+site URL, the gadget settings you used and what you expected to see.</p>
+<p><a href="index.html">Back to Illig Apps</a> &middot;
+   <a href="privacy.html">Privacy Policy</a> &middot;
+   <a href="terms.html">Terms of Service</a></p>
+</body></html>
