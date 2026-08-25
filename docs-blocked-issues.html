@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blocked Issues, Dependency &amp; Linked Issues Gadgets - Documentation</title>
+<style>
+:root{color-scheme:light dark}
+body{max-width:44rem;margin:0 auto;padding:3rem 1.25rem;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#172b4d;background:#fff}
+@media (prefers-color-scheme:dark){body{color:#c7d1db;background:#1d2125}}
+h1{font-size:1.6rem;margin:0 0 .3rem}
+h2{font-size:1.15rem;margin:2.2rem 0 .6rem}
+h3{font-size:1rem;margin:1.4rem 0 .3rem}
+p.sub{opacity:.7;margin:0 0 2rem}
+li{margin:.4rem 0}a{color:#0052cc}@media (prefers-color-scheme:dark){a{color:#669df1}}
+dt{font-weight:600;margin-top:.8rem}
+dd{margin:.15rem 0 0 1.2rem}
+code{background:rgba(9,30,66,.08);padding:.1rem .3rem;border-radius:3px;font-size:.9em}
+@media (prefers-color-scheme:dark){code{background:rgba(255,255,255,.1)}}
+.note{border-left:3px solid #0c66e4;padding:.1rem 0 .1rem .9rem;margin:1.2rem 0;opacity:.9}
+table{border-collapse:collapse;margin:.8rem 0;font-size:.95em}
+th,td{border-bottom:1px solid rgba(9,30,66,.15);text-align:left;padding:.35rem .8rem .35rem 0;vertical-align:top}
+</style></head><body>
+<h1>Blocked Issues, Dependency &amp; Linked Issues</h1>
+<p class="sub">Documentation for the Jira Cloud dashboard gadgets by Illig Apps</p>
+
+<h2>Install</h2>
+<p>A Jira administrator installs the app from the Atlassian Marketplace. There is nothing to
+configure afterwards and no account to create: the app runs on Atlassian&rsquo;s own
+infrastructure and reads your work items through Jira&rsquo;s API as the person looking at the
+gadget.</p>
+
+<h2>Add a gadget to a dashboard</h2>
+<ol>
+<li>Open <b>Dashboards</b> and pick the dashboard you want, or create one.</li>
+<li>Choose <b>Add gadget</b>, search for <i>Blocked</i> or <i>Dependencies</i>, and add
+    <b>Blocked Issues</b> or <b>Dependencies</b>.</li>
+<li>The gadget opens its settings straight away. Fill them in and choose <b>Save</b>.</li>
+</ol>
+<p>To change the settings later, use the gadget&rsquo;s <b>&hellip;</b> menu and choose
+<b>Edit</b>, or switch the whole dashboard to edit mode.</p>
+
+<div class="note"><b>Save and Cancel sit at the top of the settings form, not at the bottom.</b>
+A gadget&rsquo;s settings frame is only as tall as the dashboard column it lives in, and this
+form is longer than that &mdash; with the buttons underneath, a narrow column clips them and the
+settings cannot be saved at all. They are at the top on purpose.</div>
+
+<h2>What the two gadgets show</h2>
+
+<h3>Blocked Issues</h3>
+<p>Every work item in your selection that is waiting on an unfinished blocker, one row each:</p>
+<table>
+<tr><th>Blocked work item</th><td>Key, summary, current status and parent.</td></tr>
+<tr><th>Waiting on</th><td>Every blocker of that item: key, summary, status and &mdash; if the
+    lookup is switched on &mdash; who it is assigned to.</td></tr>
+<tr><th>Blocked for</th><td>How many days the oldest still-open blocking link has existed.
+    <i>today</i> for a link created today, <i>unknown</i> when the change history does not say.
+    Amber from 14 days, red from 30.</td></tr>
+<tr><th>Assignee</th><td>Who holds the blocked item, or <i>Unassigned</i>.</td></tr>
+</table>
+<p>Above the table: how many items are blocked, how many blocking links there are, and how many
+have been stuck for two weeks or more. Optionally a breakdown by assignee, project, parent,
+priority or status, each with the longest wait in that group.</p>
+
+<h3>Dependencies</h3>
+<p>The same links, aggregated into a matrix: which project or parent blocks which.</p>
+<table>
+<tr><th>Blocks</th><td>The side that others are waiting on.</td></tr>
+<tr><th>Waiting on it</th><td>The side that is waiting. Marked <i>outside</i> when it lies
+    beyond your selection.</td></tr>
+<tr><th>Links</th><td>How many links make up the pair, and how many of those are still open.</td></tr>
+<tr><th>For example</th><td>A few of the actual work item keys behind the number.</td></tr>
+</table>
+<p>Cross-project dependencies stop being something you find out about in a stand-up.</p>
+
+<h2>Settings</h2>
+<dl>
+<dt>Project</dt>
+<dd>The project to report on.</dd>
+
+<dt>Saved filter</dt>
+<dd>One of your favourite filters, instead of a whole project. Overrides the project above.</dd>
+
+<dt>JQL, if you would rather write it yourself</dt>
+<dd>Any JQL query, for example <code>project in (ABC, DEF) AND type != Sub-task</code>.
+    Overrides both of the settings above. Use this when a board&rsquo;s scope is narrower than
+    its project.</dd>
+
+<dt>Which link types mean &ldquo;waiting for&rdquo;</dt>
+<dd>The list is read from your own site, so it shows the link types you actually have, with the
+    wording you actually use. Leave everything unticked and the app uses every type whose inward
+    description describes blocking &mdash; that covers renamed and translated types. Tick
+    specific ones to override the detection.</dd>
+
+<dt>Break down by <span style="font-weight:400;opacity:.7">(Blocked Issues only)</span></dt>
+<dd>No breakdown, assignee, project, parent, priority or status.</dd>
+
+<dt>Show dependencies <span style="font-weight:400;opacity:.7">(Dependencies only)</span></dt>
+<dd>Between projects, or between parents (epics).</dd>
+
+<dt>Only work items that are not done</dt>
+<dd>On by default. A finished item is not waiting for anything, however many links it still
+    carries.</dd>
+
+<dt>A finished blocker no longer blocks <span style="font-weight:400;opacity:.7">(Blocked Issues only)</span></dt>
+<dd>On by default. Links to a blocker that is already done are left out, and the gadget says how
+    many it left out. Switch it off to see them.</dd>
+
+<dt>Look up who holds each blocker <span style="font-weight:400;opacity:.7">(Blocked Issues only)</span></dt>
+<dd>On by default. Costs one extra Jira call for the whole table &mdash; not one per row.
+    Switch it off if you do not need the column.</dd>
+
+<dt>Rows shown</dt>
+<dd>10, 15, 25, 50 or 100. The rows kept are the ones that have been waiting longest; the gadget
+    says when it is showing fewer rows than it found.</dd>
+
+<dt>Work items read at most</dt>
+<dd>An upper bound on how many work items the gadget reads, between 100 and 5000, 2000 by
+    default. If the bound is reached the gadget says so instead of showing a smaller number as
+    if it were complete.</dd>
+</dl>
+
+<h2>Where &ldquo;blocked for N days&rdquo; comes from</h2>
+<p>Jira knows which items are linked. It does not offer the age of a link anywhere in its own
+reporting. The app reconstructs it from the change history:</p>
+<ol>
+<li>Creating or removing a link writes a change history entry on <b>both</b> work items, with
+    the other item&rsquo;s key in the entry. The blocked item therefore carries the record of
+    its own blocker &mdash; no second lookup is needed to date it.</li>
+<li>The most recent creation entry for that blocker is the moment the dependency began; today
+    minus that date is the number shown.</li>
+<li>The <b>direction</b> never comes from the entry&rsquo;s text. That text is written in
+    English even on a German or French site, so parsing it would break outside English. The
+    direction comes from the link itself, the timestamp from the entry, the identity from the
+    key it names.</li>
+</ol>
+<p>The two gadgets together take <b>two Jira calls</b> for a whole dashboard: one search that
+returns the work items, their links and their change history at once, and one more that fetches
+the blockers&rsquo; assignees. Not one call per row.</p>
+
+<h2>The cases where the gadget says it is not sure</h2>
+<dl>
+<dt>&ldquo;Only the first N work items of this selection were read&rdquo;</dt>
+<dd>The selection is larger than the limit, so items further down are missing. Narrow the
+    filter or raise the limit.</dd>
+
+<dt>&ldquo;N links have no creation entry in the change history&rdquo;</dt>
+<dd>Their age is shown as <i>unknown</i> rather than guessed. This happens when the history was
+    trimmed, or when the item was imported with its links already in place.</dd>
+
+<dt>&ldquo;The blockers&rsquo; assignees could not be read&rdquo;</dt>
+<dd>The second call failed, so that column is left empty rather than filled with something
+    wrong. Every other figure is still correct.</dd>
+
+<dt>&ldquo;N links are to a finished blocker and are not counted&rdquo;</dt>
+<dd>Exactly what the toggle above does, stated so the total is not read as complete.</dd>
+
+<dt>&ldquo;N links point at a work item outside the selection&rdquo;</dt>
+<dd>Its parent cannot be read from the link, so those rows are grouped by project instead of by
+    parent.</dd>
+
+<dt>&ldquo;No link type on this site describes blocking&rdquo;</dt>
+<dd>Nothing can be detected automatically. Tick the types that mean &ldquo;waiting for&rdquo; in
+    the settings.</dd>
+</dl>
+
+<h2>Limits worth knowing before you buy</h2>
+<ul>
+<li>The age of a link is the age of the <b>link</b>, not of the wait. An item linked long after
+    the work stalled shows the shorter figure &mdash; the honest one.</li>
+<li>A link whose other end you cannot see is not shown to you. The gadget reads as the viewer,
+    so two people may correctly see different tables.</li>
+<li>Sub-tasks are included unless your query excludes them.</li>
+<li>The app reports on links only. An item that is stuck for a reason nobody wrote down as a
+    link cannot appear.</li>
+</ul>
+
+<h2>Permissions and data</h2>
+<p>The app asks for a single scope, <code>read:jira-work</code>, and never writes to your work
+items. Every request runs as the person looking at the gadget, so a viewer sees only what their
+own Jira permissions allow. The app stores nothing, logs nothing about you &mdash; a failed
+request records its path and status code and no response content &mdash; runs entirely on
+Atlassian infrastructure and makes no request to any server outside Atlassian.</p>
+
+<h2>Support</h2>
+<p><a href="mailto:nickillig3@gmail.com">nickillig3@gmail.com</a> &middot;
+   <a href="index.html">All apps</a> &middot;
+   <a href="privacy-blocked-issues.html">Privacy</a> &middot;
+   <a href="terms-blocked-issues.html">Terms</a></p>
+</body></html>
